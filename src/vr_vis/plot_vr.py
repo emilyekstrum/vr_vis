@@ -31,7 +31,7 @@ def increase_ball_epsilon(embedding: np.ndarray, diameter: float) -> dict:
         for i, point in enumerate(embedding)
     }
 
-    # Homology via ripser (limit by epsilon so it’s fast/controlled)
+    # Homology group count using Ripser ripser
     dgms = ripser(embedding, maxdim=2, thresh=epsilon)["dgms"]
     h0, h1, h2 = len(dgms[0]), len(dgms[1]), len(dgms[2])
 
@@ -59,7 +59,7 @@ def plot_filtration_progression(
     embedding: np.ndarray, diameter_range: Tuple[float, float], n_steps: int = 5
 ) -> None:
     """
-    Plot how the Vietoris–Rips filtration evolves with increasing diameter.
+    Plot how the Vietoris–Rips filtration evolves with increasing diameter of Euclidean balls.
     """
     min_d, max_d = diameter_range
     diameters = np.linspace(min_d, max_d, n_steps)
@@ -75,7 +75,7 @@ def plot_filtration_progression(
     else:
         raise ValueError("Embedding must have at least 2 dimensions")
 
-    # Two-row grid
+    # Two-row grid for plot output
     rows = 2
     cols = int(np.ceil(n_steps / rows))
 
@@ -98,7 +98,7 @@ def plot_filtration_progression(
             linewidth=1,
         )
 
-        # Draw faint spheres
+        # Plot spheres
         for ball in result["balls"].values():
             u = np.linspace(0, 2 * np.pi, 20)
             v = np.linspace(0, np.pi, 20)
@@ -145,7 +145,7 @@ def plot_filtration_progression(
     plt.tight_layout()
     plt.show()
 
-    # Summary (optional prints; keep for now)
+    # Summary stats
     print("\n" + "=" * 60)
     print("Filtration Progression Summary (3D)")
     print("=" * 60)
@@ -164,13 +164,9 @@ def plot_filtration_progression(
         print()
 
 
-def downsample_embedding(
-    embedding: np.ndarray,
-    n_samples: Optional[int] = None,
-    sampling_method: str = "random",
-) -> Tuple[np.ndarray, List[int]]:
+def downsample_embedding(embedding, n_samples, sampling_method):
     """
-    Downsample an embedding to reduce the number of points for faster visualization.
+    Downsample an embedding to reduce the number of points for faster and clearer visualization.
     """
     n_points = len(embedding)
 
@@ -193,10 +189,7 @@ def downsample_embedding(
     return embedding[indices], indices
 
 
-def _validate_and_extract_embedding(
-    embedding_source: Union[str, Dict[str, Any]],
-    mouse_name: str,
-) -> np.ndarray:
+def _validate_and_extract_embedding(embedding_source, mouse_name):
     """
     Accepts either a dict or a pickle path that contains
     { <mouse_name>: { 'embedding': np.ndarray, ... }, ... }.
@@ -226,14 +219,8 @@ def _validate_and_extract_embedding(
     return emb
 
 
-def test_embedding_filtration_workflow(
-    embedding_dict: Dict[str, Any],
-    mouse_name: str,
-    n_samples: int = 200,
-    diameter_range: Tuple[float, float] = (0.05, 0.3),
-    n_filtration_steps: int = 5,
-    sampling_method: str = "random",
-) -> None:
+def test_embedding_filtration_workflow(embedding_dict, mouse_name, n_samples: int = 200, diameter_range,
+    n_filtration_steps, sampling_method):
     """
     Complete test workflow for embedding visualization and VR filtration.
     """
@@ -250,15 +237,8 @@ def test_embedding_filtration_workflow(
     plot_filtration_progression(downsampled, diameter_range, n_filtration_steps)
 
 
-def run(
-    embedding_source: Union[str, Dict[str, Any]],
-    *,
-    mouse_name: str = "C155",
-    n_samples: int = 1000,
-    diameter_range: Tuple[float, float] = (0.05, 10.0),
-    n_filtration_steps: int = 10,
-    sampling_method: str = "uniform",
-) -> None:
+def run(embedding_source, *, mouse_name = "C155", n_samples = 1000, diameter_range = (0.05, 10.0),
+    n_filtration_steps = 10,sampling_method = "uniform"):
     """
     Single-call entry point for programmatic and CLI use.
 
