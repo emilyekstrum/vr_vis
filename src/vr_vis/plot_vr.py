@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from ripser import ripser
 
 
-def increase_ball_epsilon(embedding: np.ndarray, diameter: float) -> dict:
+def increase_ball_epsilon(embedding, diameter):
     """
     Create Euclidean balls with specified diameter and find overlapping connections.
 
@@ -55,9 +55,7 @@ def increase_ball_epsilon(embedding: np.ndarray, diameter: float) -> dict:
     }
 
 
-def plot_filtration_progression(
-    embedding: np.ndarray, diameter_range: Tuple[float, float], n_steps: int = 5
-) -> None:
+def plot_filtration_progression(embedding, diameter_range, n_steps = 5):
     """
     Plot how the Vietoris–Rips filtration evolves with increasing diameter of Euclidean balls.
     """
