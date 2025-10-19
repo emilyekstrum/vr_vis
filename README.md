@@ -1,8 +1,8 @@
-## Vietoris-Rips Filtration Visualization
+# Vietoris-Rips Filtration Visualization
 
 This python package visualizes Rips filtration progression.
 
-# Input
+## Input
 Start with an embedding or point cloud in a pickle file.
 
 CLI args:
@@ -14,7 +14,7 @@ CLI args:
 --n-steps: number of frames/steps to output in the visualization plot
 --sampling-method: ("random", "uniform", "first") downsampling technique
 
-# Output
+## Output
 A plot with the specified arguments. 
 
 # Example usage:
