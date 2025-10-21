@@ -2,6 +2,8 @@
 
 This python package visualizes Rips filtration progression.
 
+![rips filtration](Example-of-a-Vietoris-Rips-complex-The-18-points-are-0-simplices-Two-0-simplices-form-a.png)
+
 ## Input
 Start with an embedding or point cloud in a pickle file.
 
