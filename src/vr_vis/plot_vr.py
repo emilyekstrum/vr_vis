@@ -35,7 +35,7 @@ def increase_ball_epsilon(embedding, diameter):
     dgms = ripser(embedding, maxdim=2, thresh=epsilon)["dgms"]
     h0, h1, h2 = len(dgms[0]), len(dgms[1]), len(dgms[2])
 
-    # Overlaps → connections
+    # Form connections when balls overlap
     connections: List[Tuple[int, int]] = []
     n_points = len(embedding)
     for i in range(n_points):
@@ -144,9 +144,7 @@ def plot_filtration_progression(embedding, diameter_range, n_steps = 5):
     plt.show()
 
     # Summary stats
-    print("\n" + "=" * 60)
     print("Filtration Progression Summary (3D)")
-    print("=" * 60)
     for i, diameter in enumerate(diameters, start=1):
         result = increase_ball_epsilon(embedding_3d, diameter)
         n = len(embedding_3d)
