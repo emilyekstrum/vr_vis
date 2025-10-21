@@ -26,3 +26,6 @@ poetry run vr_vis --embeddings path/to/embeddings.pkl --mouse C155 --n-samples 1
 
 
 Author: Emily Ekstrum emily.ekstrum@cuanschutz.edu
+
+
+Image: Topaz, C. M., Ziegelmeier, L., & Halverson, T. (2015). Topological data analysis of biological aggregation models. PLOS ONE, 10(5). doi:10.1371/journal.pone.0126383 
