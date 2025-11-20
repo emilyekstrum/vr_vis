@@ -7,7 +7,7 @@ This python package visualizes Rips filtration progression.
 ## Input
 Start with an embedding or point cloud in a pickle file.
 
-CLI args:
+CLI args: <br>
 --embedding: path to embedding data as a pickle file (.pkl) <br>
 --mouse: mouse or experiment ID <br>
 --n-samples: number of downsampled samples to include in visualization. This is a major bottleneck source for time, so be careful with this. Default is 1000 <br>
