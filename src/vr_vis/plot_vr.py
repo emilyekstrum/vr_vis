@@ -9,20 +9,16 @@ from ripser import ripser
 
 
 def increase_ball_epsilon(embedding, diameter):
-    """
-    Create Euclidean balls with specified diameter and find overlapping connections.
+    """ Create Euclidean balls with specified diameter and find overlapping connections.
 
-    Parameters
-    ----------
-    embedding : (N, d) array
-    diameter : float
-        Ball DIAMETER (we internally use epsilon=diameter/2)
+    Args:
+        embedding : (N, d) array
+        diameter : float ball diameter
 
-    Returns
-    -------
-    dict with keys:
-        balls, connections, epsilon, diameter, num_connections, h0, h1, h2
-    """
+    Returns:
+        dict with keys:
+            balls, connections, epsilon, diameter, num_connections, h0, h1, h2"""
+    
     epsilon = diameter / 2.0
 
     # Balls for each point
@@ -31,7 +27,7 @@ def increase_ball_epsilon(embedding, diameter):
         for i, point in enumerate(embedding)
     }
 
-    # Homology group count using Ripser ripser
+    # Homology group count using Ripser 
     dgms = ripser(embedding, maxdim=2, thresh=epsilon)["dgms"]
     h0, h1, h2 = len(dgms[0]), len(dgms[1]), len(dgms[2])
 
@@ -56,13 +52,12 @@ def increase_ball_epsilon(embedding, diameter):
 
 
 def plot_filtration_progression(embedding, diameter_range, n_steps = 5):
-    """
-    Plot how the Vietoris–Rips filtration evolves with increasing diameter of Euclidean balls.
-    """
+    """ Plot Vietoris–Rips filtration progression with increasing diameter of Euclidean balls."""
+    
     min_d, max_d = diameter_range
     diameters = np.linspace(min_d, max_d, n_steps)
 
-    # Ensure 3D for visualization
+    # uses 3D plot
     if embedding.shape[1] == 2:
         embedding_3d = np.column_stack([embedding, np.zeros(len(embedding))])
         print("Note: Converting 2D embedding to 3D for visualization (z=0)")
@@ -161,9 +156,13 @@ def plot_filtration_progression(embedding, diameter_range, n_steps = 5):
 
 
 def downsample_embedding(embedding, n_samples, sampling_method):
-    """
-    Downsample an embedding to reduce the number of points for faster and clearer visualization.
-    """
+    """ Downsample an embedding to reduce the number of points for faster and clearer visualization.
+    
+    Args:
+        embedding: (N, d) array
+        n_samples: target number of points in downsampled embedding
+        sampling_method: random, uniform, or first"""
+    
     n_points = len(embedding)
 
     if n_samples is None:
@@ -186,11 +185,11 @@ def downsample_embedding(embedding, n_samples, sampling_method):
 
 
 def _validate_and_extract_embedding(embedding_source, mouse_name):
-    """
-    Accepts either a dict or a pickle path that contains
+    """ Accepts either a dict or a pickle path that contains
     { <mouse_name>: { 'embedding': np.ndarray, ... }, ... }.
-    Returns the embedding array for the given mouse_name.
-    """
+    
+    Returns the embedding array for the given mouse_name. """
+    
     if isinstance(embedding_source, str):
         if not os.path.exists(embedding_source):
             raise FileNotFoundError(f"Embeddings file not found: {embedding_source}")
@@ -217,9 +216,8 @@ def _validate_and_extract_embedding(embedding_source, mouse_name):
 
 def test_embedding_filtration_workflow(embedding_dict, mouse_name, n_samples: int = 200, diameter_range,
     n_filtration_steps, sampling_method):
-    """
-    Complete test workflow for embedding visualization and VR filtration.
-    """
+    """Tests workflow for embedding visualization and VR filtration."""
+        
     original_embedding = _validate_and_extract_embedding(embedding_dict, mouse_name)
     print(f"Original embedding shape: {original_embedding.shape}")
 
@@ -235,20 +233,18 @@ def test_embedding_filtration_workflow(embedding_dict, mouse_name, n_samples: in
 
 def run(embedding_source, *, mouse_name = "C155", n_samples = 1000, diameter_range = (0.05, 10.0),
     n_filtration_steps = 10,sampling_method = "uniform"):
-    """
-    Single-call entry point for programmatic and CLI use.
+    """ Single-call entry point for CLI use.
 
-    Parameters
-    ----------
-    embedding_source : str | dict
-        Either a path to a pickle file containing the embeddings dict, or the dict itself.
-        Dict is expected to have: { mouse_name: {"embedding": np.ndarray, ...}, ... }
-    mouse_name : str
-    n_samples : int
-    diameter_range : (min, max)
-    n_filtration_steps : int
-    sampling_method : {'random','uniform','first'}
-    """
+    Parameters:
+        embedding_source : str | dict
+            Either a path to a pickle file containing the embeddings dict, or the dict itself.
+            Dict should have: { mouse_name: {"embedding": np.ndarray, ...}, ... }
+        mouse_name : str
+        n_samples : int
+        diameter_range : (min, max)
+        n_filtration_steps : int
+        sampling_method : {'random','uniform','first'}"""
+        
     if isinstance(embedding_source, str):
         with open(embedding_source, "rb") as f:
             embedding_dict = pkl.load(f)
